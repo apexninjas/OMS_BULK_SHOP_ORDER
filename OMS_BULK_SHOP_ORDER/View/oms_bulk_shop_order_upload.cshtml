@@ -1,0 +1,104 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="http://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top" style="height:60px;">
+        <div class="container">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+           
+        </div>
+    </div>
+    <br /> <br /> <br /> <br />
+    <div class="row">
+        <div class="col-md-6 text-right" style="margin:20px;">
+            <div style="display: inline-block;">
+
+                <input style="background:#f8d5d5;" class="form-control" type="file" id="excelFile" onchange="encodeFileAsURL(excelFile);">
+            </div>
+            <div style="display: inline-block;">
+                <input class="btn btn-primary" type="submit" id="bulkSubmit" value="Save" onclick="UploadExcelData()">
+            </div>
+        </div>
+
+
+    </div>
+
+
+    @*<script src="~/Scripts/jquery-3.3.1.min.js"></script>*@
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+        var excel_file;
+        // var List;
+        $(document).ready(function () {
+
+        });
+    
+  
+        function encodeFileAsURL(param) {
+            var filesSelected = document.getElementById(param.id).files;
+            if (filesSelected.length > 0) {
+                var fileToLoad = filesSelected[0];
+                var fileReader = new FileReader();
+                fileReader.onload = function (fileLoadedEvent) {
+                    srcData = fileLoadedEvent.target.result; // <--- data: base64
+                    var str = srcData;
+                    var excelitems = str.split(",");
+                    if (param.id == "excelFile" && excel_file == undefined) excel_file = excelitems[excelitems.length - 1];
+
+                    var newFile = document.createElement('excel_file');
+                    newFile.src = srcData;
+                    //document.getElementById("imgTest").innerHTML = newImage.outerHTML;
+                }
+                fileReader.readAsDataURL(fileToLoad);
+
+            }
+        }
+        function UploadExcelData() {
+            // alert("Hello");
+            console.log(excel_file);
+            var model = {
+                ExcelBase64 : excel_file
+            };
+            console.log(model);
+            //$.ajax({
+            //    // url: 'http://localhost/apex_web_dashboard_api/api/Dashboard/SaveU1OrderFeedbackBulkExcel',
+            //  //  url: 'http://api.apexhelpdesk.com:88/api/OMSShopOrder/SaveShopOrder',
+            //    //url: 'http://192.168.199.114/apex_web_dashboard_api/api/Dashboard/SaveU1OrderFeedbackBulkExcel',
+            //    type: 'POST',
+            //    contentType: 'application/json',
+            //    dataType: 'json',
+            //    data: JSON.stringify(model),
+            //    success: function (response) {
+            //        alert(response.message);
+            //        window.location.href = '/Views/u2_factory_dashboard/u2_factory_data_upload_view.cshtml';
+            //        //alert(response.data[0].Model_Description);
+            //    },
+            //    error: function () {
+            //        // Handle errors
+            //    }
+            //});
+        }
+    </script>
+</body>
+</html>
